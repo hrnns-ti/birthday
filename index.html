@@ -1,27 +1,211 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./node_modules/nes.css/css/nes.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-    <link href="style.css" rel="stylesheet" />
-    <title>Happy Birthday!!! Calyahita Mardiana Putri</title>
-    <style>
-      html, body, pre, code, kbd, samp {
-          font-family: "Press Start 2P";
-          background-color: pink;
-      }
-      html {
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body style="margin: 2%;">
-    <div class="nes-container is-dark is-rounded">
+
+<body class="intro-active">
+  <!-- Pixel Balloon Intro Overlay (no extra background) -->
+  <div id="balloon-intro" class="balloon-intro" aria-hidden="true">
+    <canvas id="balloon-canvas"></canvas>
+    <button id="skip-intro" class="nes-btn intro-skip" type="button">SKIP</button>
+  </div>
+
+  <!-- Global background music (plays across the whole site) -->
+  <audio id="bg-music" loop preload="auto">
+    <!-- Replace this URL with your own music file if you want -->
+    <source src="https://www.orangefreesounds.com/wp-content/uploads/2018/11/Happy-birthday-piano-music.mp3" type="audio/mpeg" />
+  </audio>
+  <button id="music-toggle" class="nes-btn is-success music-toggle" type="button" aria-label="Toggle music">
+    MUSIC: OFF
+  </button>
+
+  <!-- 1-page scrollable content -->
+  <main id="app">
+    <!-- Start Screen -->
+    <section id="start-screen" class="page page-start">
+      <div class="container">
+        <div class="title-box">
+          <h1 class="nes-text is-primary">HAPPY BIRTHDAY</h1>
+          <p class="subtitle">Press START to begin</p>
+        </div>
+
+        <div class="character-display">
+          <div class="nes-container is-rounded is-dark character-box">
+            <div class="pixel-art cake"></div>
+            <p class="nes-text is-warning">SPECIAL DAY</p>
+          </div>
+        </div>
+
+        <button class="nes-btn is-primary start-btn" type="button" onclick="startGame()">
+          START
+        </button>
+
+        <div class="credits">
+          <p class="nes-text is-disabled">A Special Message</p>
+          <p class="nes-text is-disabled">From Your Love</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Speech Section -->
+    <section id="speech-section" class="page page-speech">
+      <div class="container">
+        <div class="nes-container with-title is-centered">
+          <p class="title nes-text is-primary">HAPPY BIRTHDAY!</p>
+
+          <div class="speech-content">
+            <div class="pixel-art big-cake"></div>
+
+            <div class="dialog-box">
+              <div class="nes-balloon from-left">
+                <p id="typewriter-text"></p>
+                <span class="cursor">_</span>
+              </div>
+            </div>
+
+            <div class="decorations">
+              <div class="pixel-art star"></div>
+              <div class="pixel-art heart"></div>
+              <div class="pixel-art star"></div>
+            </div>
+          </div>
+
+          <div class="stats-bar">
+            <div class="nes-container is-rounded stat-box">
+              <p class="nes-text is-success">LOVE: 999</p>
+            </div>
+            <div class="nes-container is-rounded stat-box">
+              <p class="nes-text is-warning">JOY: MAX</p>
+            </div>
+            <div class="nes-container is-rounded stat-box">
+              <p class="nes-text is-error">HAPPINESS: 100%</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="nes-btn is-error back-btn" type="button" onclick="backToStart()">
+          BACK TO START
+        </button>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery-section" class="page page-gallery">
+      <div class="container">
+        <div class="nes-container with-title">
+          <p class="title nes-text is-primary">MEMORY ALBUM</p>
+
+          <div class="gallery-grid">
+            <div class="photo-slot" onclick="openPhoto(1)">
+              <div class="nes-container is-rounded photo-frame">
+                <div class="pixel-art photo-placeholder"></div>
+                <p class="nes-text is-disabled slot-label">PHOTO 1</p>
+              </div>
+            </div>
+
+            <div class="photo-slot" onclick="openPhoto(2)">
+              <div class="nes-container is-rounded photo-frame">
+                <div class="pixel-art photo-placeholder"></div>
+                <p class="nes-text is-disabled slot-label">PHOTO 2</p>
+              </div>
+            </div>
+
+            <div class="photo-slot" onclick="openPhoto(3)">
+              <div class="nes-container is-rounded photo-frame">
+                <div class="pixel-art photo-placeholder"></div>
+                <p class="nes-text is-disabled slot-label">PHOTO 3</p>
+              </div>
+            </div>
+
+            <div class="photo-slot" onclick="openPhoto(4)">
+              <div class="nes-container is-rounded photo-frame">
+                <div class="pixel-art photo-placeholder"></div>
+                <p class="nes-text is-disabled slot-label">PHOTO 4</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-stats">
+            <div class="nes-container is-rounded">
+              <p class="nes-text is-success">MEMORIES COLLECTED: 4/4</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="nes-btn is-error back-btn" type="button" onclick="backToStart()">
+          BACK TO START
+        </button>
+      </div>
+    </section>
+
+    <!-- Photo Modal -->
+    <div id="photo-modal" class="modal" aria-hidden="true">
+      <div class="modal-content">
+        <div class="nes-container with-title is-centered">
+          <p class="title nes-text is-primary" id="modal-title">PHOTO</p>
+          <div class="pixel-art modal-photo"></div>
+          <p class="nes-text is-disabled">Add your special photo here!</p>
+          <button class="nes-btn is-error" type="button" onclick="closeModal()">CLOSE</button>
+        </div>
+      </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <!-- Message Section -->
+    <section id="message-section" class="page page-message">
+      <div class="container">
+        <div class="nes-container with-title">
+          <p class="title nes-text is-primary">SPECIAL MESSAGE</p>
+
+          <div class="message-content">
+            <div class="letter-header">
+              <div class="pixel-art envelope"></div>
+              <p class="nes-text is-success">FROM: YOUR LOVE</p>
+              <p class="nes-text is-disabled">TO: MY SPECIAL SOMEONE</p>
+            </div>
+
+            <div class="nes-container is-rounded letter-body">
+              <p class="message-line">My Dearest,</p>
+              <br />
+              <p class="message-line">Di hari spesial ini, aku cuma mau bilang: makasih ya, sudah jadi kamu. Makasih karena kehadiran kamu itu selalu punya cara sendiri buat bikin suasana jadi lebih tenang dan lebih “hidup”.</p>
+              <p class="message-line">Kamu mungkin nggak selalu sadar, tapi hal-hal kecil yang kamu lakuin—cara kamu peduli, cara kamu dengerin, cara kamu berusaha—itu berarti banget.</p>
+              <p class="message-line">Semoga di umur yang baru, kamu makin sayang sama diri sendiri. Jangan terlalu keras sama diri kamu ya, Calya.</p>
+              <p class="message-line">Kamu udah hebat sampai di titik ini. Kalau ada hari yang berat, semoga kamu selalu punya ruang untuk istirahat, punya orang-orang yang mau menemani, dan punya keyakinan kalau semuanya akan membaik pelan-pelan.</p>
+              <p class="message-line">Aku doain kamu terus dikelilingi hal-hal baik: orang-orang tulus, kabar-kabar yang bikin lega, kesempatan yang makin luas, dan cinta yang bikin kamu merasa aman.</p>
+              <p class="message-line">Semoga setiap langkah kamu dijaga, setiap niat baik kamu dimudahkan jalannya, dan setiap usaha kamu dibalas dengan hasil terbaik.</p>
+              <br />
+              <p class="message-line">Nikmatin hari ini ya, jangan lupa bahagia.</p>
+              <br />
+              <p class="message-line nes-text is-error">I LOVE YOU!</p>
+              <br />
+              <p class="message-line align-right">Forever Yours,</p>
+              <p class="message-line align-right nes-text is-success">Your Love</p>
+            </div>
+
+            <div class="letter-footer">
+              <div class="pixel-art small-heart"></div>
+              <div class="pixel-art small-heart"></div>
+              <div class="pixel-art small-heart"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="nes-btn is-error back-btn" type="button" onclick="backToStart()">
+          BACK TO START
+        </button>
+      </div>
+    </section>
+
+    <footer class="game-footer">
+      <p class="nes-text is-disabled">MADE WITH LOVE</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
