@@ -54,7 +54,7 @@ function bindCancelOnUserIntent() {
 let typewriterInterval = null;
 let currentText = '';
 
-// Change this message anytime ❤️
+// message
 const fullText =
   "Happy Birthday Calyahita Mardiana Putri [:D] Semoga selalu sehat, panjang umur, dimudahkan semua urusannya, dilancarkan rezekinya, dan makin bahagia setiap hari. Semoga semua mimpi dan rencana baiknya satu per satu jadi nyata. Tetap jadi Calya yang hangat, kuat, dan penuh senyum ya. <3";
 
@@ -295,7 +295,7 @@ async function tryPlayIntroSfx() {
     const master = ac.createGain();
     master.gain.setValueAtTime(0.0001, now);
     master.gain.exponentialRampToValueAtTime(0.07, now + 0.02);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.60);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.90);
     master.connect(ac.destination);
 
     // Little sparkle
@@ -303,7 +303,7 @@ async function tryPlayIntroSfx() {
     freqs.forEach((f, i) => {
       const osc = ac.createOscillator();
       osc.type = 'square';
-      osc.frequency.setValueAtTime(f, now + i * 0.06);
+      osc.frequency.setValueAtTime(f, now + i * 0.01);
 
       const g = ac.createGain();
       g.gain.setValueAtTime(0.0001, now + i * 0.06);
@@ -452,7 +452,7 @@ function initBalloonIntro() {
       bw,
       bh,
       // px/ms (tuned so the intro lasts a few seconds)
-      speed: (0.12 + Math.random() * 0.10) * (px / 5),
+      speed: (0.50 + Math.random() * 0.12) * (px / 5),
       drift: 6 + Math.random() * 14,
       wobble: 0.8 + Math.random() * 1.2,
       phase: Math.random() * Math.PI * 2,
@@ -461,7 +461,7 @@ function initBalloonIntro() {
     };
   }
 
-  // Enough balloons to feel "full screen"
+  // Enough balloons to feel full screen
   const count = Math.min(90, Math.max(42, Math.floor((w * h) / 16000)));
   const balloons = [];
   for (let i = 0; i < count; i++) {

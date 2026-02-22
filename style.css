@@ -20,6 +20,10 @@ body.intro-active {
   overflow: hidden; /* lock scroll during intro */
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 /* ===== PAGE LAYOUT ===== */
 .page {
   min-height: 100vh;
