@@ -4,7 +4,7 @@ import Spline from "@splinetool/react-spline";
 const SECTION_COUNT = 4;
 const AUTO_SCROLL_DELAY = 5000;
 
-/* ── Floating Hearts Background ───────────────────── */
+/* Floating Hearts Background */
 function FloatingHearts() {
   const hearts = Array.from({ length: 6 }, (_, i) => ({
     id: i,
@@ -35,7 +35,7 @@ function FloatingHearts() {
   );
 }
 
-/* ── SVG Line Path Decoration (edge-to-edge) ─────── */
+/* SVG Line Path Decoration (edge-to-edge) */
 function RedLinePath({ variant = 1, active }) {
   /* Paths span full viewBox width (0 → 1920) so they reach both edges */
   const paths = {
@@ -73,7 +73,7 @@ function RedLinePath({ variant = 1, active }) {
   );
 }
 
-/* ── Main App ──────────────────────────────────────── */
+/* Main App */
 export default function App() {
   const [isDesktop, setIsDesktop] = useState(true);
   const [activeSection, setActiveSection] = useState(0);
@@ -99,7 +99,7 @@ export default function App() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  /* ── Audio setup ─────────────────────────────────── */
+  /* Audio setup */
   useEffect(() => {
     const audio = new Audio("/birthday-song.mp3");
     audio.loop = true;
@@ -140,7 +140,7 @@ export default function App() {
     }
   }, [audioReady]);
 
-  /* ── Trigger fade-ins for a section ──────────────── */
+  /* Trigger fade-ins for a section */
   const triggerFadeIn = useCallback((sectionIndex) => {
     setTimeout(() => {
       const sectionEl = document.querySelector(
@@ -154,14 +154,14 @@ export default function App() {
     }, 300);
   }, []);
 
-  /* ── Reset all fade elements ─────────────────────── */
+  /* Reset all fade elements */
   const resetAllFades = useCallback(() => {
     document.querySelectorAll(".fade-element.visible").forEach((el) => {
       el.classList.remove("visible");
     });
   }, []);
 
-  /* ── Go to a specific section ────────────────────── */
+  /* Go to a specific section */
   const goToSection = useCallback(
     (index) => {
       setActiveSection(index);
@@ -170,7 +170,7 @@ export default function App() {
     [triggerFadeIn],
   );
 
-  /* ── Start auto-scroll from section 0 ───────────── */
+  /* Start auto-scroll from section 0 */
   const startAutoScroll = useCallback(() => {
     if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
 
@@ -190,7 +190,7 @@ export default function App() {
     }, AUTO_SCROLL_DELAY);
   }, [goToSection, resetAllFades]);
 
-  /* ── Resume auto-scroll from a specific section ─── */
+  /* Resume auto-scroll from a specific section */
   const resumeAutoScroll = useCallback(
     (fromSection) => {
       if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
@@ -209,7 +209,7 @@ export default function App() {
     [goToSection],
   );
 
-  /* ── Pause / Resume toggle ───────────────────── */
+  /* Pause / Resume toggle */
   const togglePause = useCallback(() => {
     if (isPaused) {
       // Resume: immediately scroll to next section, then continue cycle
@@ -252,7 +252,7 @@ export default function App() {
     }
   }, [showIntro, audioReady]);
 
-  /* ── Dismiss intro & unlock audio ──────────────── */
+  /* Dismiss intro & unlock audio */
   const handleEnter = useCallback(() => {
     localStorage.setItem("birthday-audio-ok", "1");
     // Start audio (user gesture unlocks autoplay)
@@ -265,7 +265,7 @@ export default function App() {
     setShowIntro(false);
   }, []);
 
-  /* ── Smooth outro: fade + audio ramp-down ─────── */
+  /* Smooth outro: fade + audio ramp-down */
   const handleOutro = useCallback(() => {
     if (isOutro) return;
     setIsOutro(true);
@@ -292,13 +292,13 @@ export default function App() {
     }, 1200);
   }, [isOutro]);
 
-  /* ── Spline loaded — attach event listeners ──── */
+  /* Spline loaded — attach event listeners */
   const handleSplineLoad = useCallback((app) => {
     setSplineLoaded(true);
     splineApp.current = app;
   }, []);
 
-  /* ── Intro Screen (first visit only) ──────────── */
+  /* Intro Screen (first visit only) */
   if (showIntro) {
     return (
       <div className="intro-screen">
@@ -334,7 +334,7 @@ export default function App() {
     );
   }
 
-  /* ── Desktop Gate ──────────────────────────────── */
+  /* Desktop Gate */
   if (!isDesktop) {
     return (
       <div className="desktop-gate">
@@ -364,14 +364,14 @@ export default function App() {
     );
   }
 
-  /* ── Birthday Wishes Data ──────────────────────── */
+  /* Birthday Wishes Data */
   const wishes = [
-    { emoji: "✨", text: "May every dream you chase become your reality." },
-    { emoji: "🌸", text: "Wishing you endless laughter and joy this year." },
-    { emoji: "💖", text: "You deserve all the love in the world and more." },
-    { emoji: "🎂", text: "May this year bring you sweet surprises every day." },
+    { emoji: "", text: "May every dream you chase become your reality." },
+    { emoji: "", text: "Wishing you endless laughter and joy this year." },
+    { emoji: "", text: "You deserve all the love in the world and more." },
+    { emoji: "", text: "May this year bring you sweet surprises every day." },
     {
-      emoji: "🌟",
+      emoji: "",
       text: "Shine bright, because you light up everyone around you.",
     },
   ];
@@ -382,7 +382,7 @@ export default function App() {
 
   return (
     <div className="viewport">
-      {/* ── Music Toggle Button ──────────────────────── */}
+      {/* Music Toggle Button */}
       <button
         className={`music-btn ${!audioReady ? "no-audio" : ""}`}
         onClick={toggleMusic}
@@ -395,10 +395,10 @@ export default function App() {
         }
         aria-label={musicPlaying ? "Pause music" : "Play music"}
       >
-        {!audioReady ? "🔇" : musicPlaying ? "🔊" : "🔈"}
+        {!audioReady ? "🔇" : musicPlaying ? "🔊" : "🔇"}
       </button>
 
-      {/* ── Pause / Resume Button (hidden at section 4) ── */}
+      {/* Pause / Resume Button (hidden at section 4) */}
       {!showSpline && (
         <button
           className="pause-btn"
@@ -410,7 +410,7 @@ export default function App() {
         </button>
       )}
 
-      {/* ── Slide Track (sections 1–3, GPU-accelerated) ── */}
+      {/* Slide Track (sections 1–3, GPU-accelerated) */}
       <div
         className="slide-track"
         style={{
@@ -422,7 +422,7 @@ export default function App() {
           transition: "transform 1.6s cubic-bezier(0.45, 0, 0.55, 1)",
         }}
       >
-        {/* ────────────── SECTION 1: HERO ────────────── */}
+        {/* SECTION 1: HERO */}
         <section
           data-section="0"
           className={`section ${activeSection === 0 ? "active" : ""}`}
@@ -494,7 +494,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* ────────────── SECTION 2: LOVE LETTER ─────── */}
+        {/* SECTION 2: LOVE LETTER */}
         <section
           data-section="1"
           className={`section ${activeSection === 1 ? "active" : ""}`}
@@ -528,19 +528,30 @@ export default function App() {
                 fontWeight: 300,
               }}
             >
-              On this beautiful day, I want you to know how grateful I am to
-              have you in my life. Your smile is the sun that warms my days, and
-              your laughter is the melody that fills my heart. Every moment with
-              you is a gift I will always treasure.
+              Di hari spesial ini, aku cuma mau bilang: makasih ya, sudah jadi
+              kamu. Makasih karena kehadiran kamu itu selalu punya cara sendiri
+              buat bikin suasana jadi lebih tenang dan lebih “hidup”. Kamu
+              mungkin nggak selalu sadar, tapi hal-hal kecil yang kamu lakuin,
+              cara kamu peduli, cara kamu dengerin, cara kamu berusaha itu
+              berarti banget. Semoga di umur yang baru, kamu makin sayang sama
+              diri sendiri. Jangan terlalu keras sama diri kamu ya, Calya. Kamu
+              udah hebat sampai di titik ini. Kalau ada hari yang berat, semoga
+              kamu selalu punya ruang untuk istirahat, punya orang-orang yang
+              mau menemani, dan punya keyakinan kalau semuanya akan membaik
+              pelan-pelan. Aku doain kamu terus dikelilingi hal-hal baik:
+              orang-orang tulus, kabar-kabar yang bikin lega, kesempatan yang
+              makin luas, dan cinta yang bikin kamu merasa aman Semoga setiap
+              langkah kamu dijaga, setiap niat baik kamu dimudahkan jalannya,
+              dan setiap usaha kamu dibalas dengan hasil terbaik.
               <br />
               <br />
               Here&apos;s to another year of adventures, dreams, and endless
-              love. Happy Birthday, my love. 🤍
+              love. Happy Birthday...
             </p>
           </div>
         </section>
 
-        {/* ────────────── SECTION 3: WISHES ──────────── */}
+        {/* SECTION 3: WISHES */}
         <section
           data-section="2"
           className={`section ${activeSection === 2 ? "active" : ""}`}
@@ -586,7 +597,7 @@ export default function App() {
         </section>
       </div>
 
-      {/* ── SECTION 4: SPLINE (behind slide track, NO transform) ── */}
+      {/* SECTION 4: SPLINE (behind slide track, NO transform) */}
       <div
         data-section="3"
         style={{
@@ -618,7 +629,7 @@ export default function App() {
               fontWeight: 300,
             }}
           >
-            A little something for you — interact with it! 💝
+            A little something for you — interact with it!
           </p>
         </div>
 
@@ -704,7 +715,7 @@ export default function App() {
         )}
       </div>
 
-      {/* ── Outro fade overlay ─────────────────────── */}
+      {/* Outro fade overlay */}
       {isOutro && (
         <div
           style={{
